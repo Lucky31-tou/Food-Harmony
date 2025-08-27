@@ -219,7 +219,7 @@ function Frigo() {
      };
 
      return (
-          <div
+         <div
                className="bg-base-200"
                style={{ minHeight: "calc(100vh - 130px)", paddingTop: "130px" }}
           >
