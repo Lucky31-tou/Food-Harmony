@@ -4,8 +4,10 @@ import logo from "./images/logo.jpg";
 import { createPortal } from "react-dom";
 import { useState, useMemo, createContext, useContext } from "react";
 
+// Contexte pour gérer l'ouverture/fermeture de la boîte de dialogue
 const DialogContext = createContext();
 
+// Hook personnalisé pour accéder au contexte Dialog
 const useDialog = () => {
      const context = useContext(DialogContext);
 
@@ -16,6 +18,7 @@ const useDialog = () => {
      return context;
 };
 
+// Fournit le contexte Dialog à ses enfants
 const Dialog = ({ children }) => {
      const [open, setOpen] = useState(0);
 
@@ -34,6 +37,7 @@ const Dialog = ({ children }) => {
      );
 };
 
+// Bouton pour ouvrir la boîte de dialogue de création de menu
 const DialogTrigger = () => {
      const { setOpen } = useDialog();
      return (
@@ -43,6 +47,7 @@ const DialogTrigger = () => {
      );
 };
 
+// Bouton pour fermer la boîte de dialogue
 const DialogClose = () => {
      const { setOpen } = useDialog();
      return (
@@ -55,6 +60,7 @@ const DialogClose = () => {
      );
 };
 
+// Contenu de la boîte de dialogue (formulaire de création de menu)
 const DialogContent = ({ children }) => {
      const context = useDialog();
 
@@ -70,6 +76,7 @@ const DialogContent = ({ children }) => {
      );
 };
 
+// Formulaire pour ajouter un nouveau menu
 function FormAddMenu({ setMenus, menus }) {
      const { setOpen } = useDialog();
      const [food, setFood] = useState("");
@@ -77,21 +84,25 @@ function FormAddMenu({ setMenus, menus }) {
      const [badge, setBadge] = useState("");
      const [listFood, setListFood] = useState([]);
 
+     // Ajoute un aliment à la liste du menu
      const handleClick = () => {
           if (food.trim().length) setListFood([...listFood, food]);
           setFood("");
      };
 
+     // Supprime un aliment de la liste du menu
      const handleDelete = (f) => {
           setListFood(listFood.filter((food) => food !== f));
           console.log(listFood);
      };
 
+     // Ajoute un badge au menu
      const handleBadge = () => {
           setBadge(valeur);
           setValeur("");
      };
 
+     // Soumet le formulaire et ajoute le menu à la liste
      const handleSubmit = (e) => {
           e.preventDefault();
 
@@ -109,6 +120,7 @@ function FormAddMenu({ setMenus, menus }) {
 
      return (
           <form onSubmit={handleSubmit}>
+               {/* Champ pour ajouter un aliment */}
                <div className="join form-control">
                     <input
                          type="text"
@@ -127,6 +139,7 @@ function FormAddMenu({ setMenus, menus }) {
                          <Plus />
                     </button>
                </div>
+               {/* Liste des aliments ajoutés */}
                <ul className="list-disc pl-5 my-4">
                     {listFood.map((f, index) => (
                          <li
@@ -144,6 +157,7 @@ function FormAddMenu({ setMenus, menus }) {
                          </li>
                     ))}
                </ul>
+               {/* Champ pour ajouter un badge */}
                {badge === "" ? (
                     <div className="form-control">
                          <div className="join">
@@ -163,6 +177,7 @@ function FormAddMenu({ setMenus, menus }) {
                ) : (
                     <div className="badge badge-primary mt-4">{badge}</div>
                )}
+               {/* Bouton pour soumettre le formulaire */}
                <button type="submit" className="btn btn-primary w-full mt-6">
                     Créer
                </button>
@@ -170,6 +185,7 @@ function FormAddMenu({ setMenus, menus }) {
      );
 }
 
+// Composant pour afficher un menu individuel
 function Menu(props) {
      return (
           <div className="card bg-base-100 shadow-xl">
@@ -195,10 +211,12 @@ function Menu(props) {
      );
 }
 
+// Composant principal de la page Menus
 function Menus() {
      const { setPage } = usePage();
      const { menus, setMenus } = useMenu();
 
+     // Supprime un menu par son id
      const handleDelete = (id) => {
           setMenus(menus.filter((menu) => menu.id !== id));
      };
@@ -209,6 +227,7 @@ function Menus() {
                style={{ minHeight: "calc(100vh - 130px)", paddingTop: "130px" }}
           >
                <div className="container mx-auto px-4 py-8 max-w-7xl">
+                    {/* Titre et logo */}
                     <div className="flex justify-center items-center gap-4 mb-8">
                          <h1 className="text-4xl font-bold">Vos menus</h1>
                          <img
@@ -218,6 +237,7 @@ function Menus() {
                          />
                     </div>
                     <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-1">
+                         {/* Liste des menus */}
                          <div className="lg:col-span-3 md:col-span-1">
                               <div className="space-y-4">
                                    {menus.length > 0 ? (
@@ -235,6 +255,7 @@ function Menus() {
                                              ))}
                                         </div>
                                    ) : (
+                                        // Message si aucun menu n'est présent
                                         <div
                                              role="alert"
                                              className="alert alert-info max-w-2xl mx-auto"
@@ -259,9 +280,11 @@ function Menus() {
                                    )}
                               </div>
                          </div>
+                         {/* Colonne pour créer un menu et revenir à l'accueil */}
                          <div className="lg:col-span-1 md:col-span-1">
                               <div className="sticky top-40">
                                    <div className="flex flex-col gap-4">
+                                        {/* Boîte de dialogue de création de menu */}
                                         <Dialog>
                                              <DialogTrigger />
                                              <DialogContent>
@@ -279,6 +302,7 @@ function Menus() {
                                                   />
                                              </DialogContent>
                                         </Dialog>
+                                        {/* Bouton pour revenir à l'accueil */}
                                         <button
                                              className="btn btn-ghost"
                                              onClick={() => {

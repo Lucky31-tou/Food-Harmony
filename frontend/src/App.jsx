@@ -8,8 +8,9 @@ import Accueil from "./Accueil";
 import Frigo from "./Frigo";
 import Menus from "./Menu";
 
+// Contexte pour gérer les menus
 const MenuC = ({ children }) => {
-     const [menus, setMenus] = useState([]);
+     const [menus, setMenus] = useState([]); // Liste des menus
 
      return (
           <MenuContext.Provider value={{ menus, setMenus }}>
@@ -18,8 +19,9 @@ const MenuC = ({ children }) => {
      );
 };
 
+// Contexte pour gérer les aliments du frigo
 const FrigoC = ({ children }) => {
-     const [foods, setFoods] = useState([]);
+     const [foods, setFoods] = useState([]); // Liste des aliments
 
      return (
           <FrigoContext.Provider value={{ foods, setFoods }}>
@@ -28,8 +30,9 @@ const FrigoC = ({ children }) => {
      );
 };
 
+// Contexte pour gérer la page courante (Accueil, Frigo, Menus)
 const Page = ({ children }) => {
-     const [page, setPage] = useState(0);
+     const [page, setPage] = useState(0); // 0: Accueil, 1: Frigo, 2: Menus
 
      return (
           <PageContext.Provider value={{ page, setPage }}>
@@ -38,27 +41,30 @@ const Page = ({ children }) => {
      );
 };
 
+// Affiche le contenu de la page selon la valeur de 'page'
 function PageContent() {
      const { page } = usePage();
 
      let content;
      switch (page) {
           case 0:
-               content = <Accueil />;
+               content = <Accueil />; // Page d'accueil
                break;
           case 1:
-               content = <Frigo />;
+               content = <Frigo />; // Page frigo
                break;
           case 2:
-               content = <Menus />;
+               content = <Menus />; // Page menus
      }
 
      return <div>{content}</div>;
 }
 
+// Composant principal de l'application
 function App() {
      return (
           <div style={{ minHeight: "100vh" }}>
+               {/* Fournit les contextes à toute l'application */}
                <Page>
                     <FrigoC>
                          <MenuC>

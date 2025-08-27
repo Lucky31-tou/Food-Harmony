@@ -4,17 +4,19 @@ import logo from "./images/logo.jpg";
 import { createPortal } from "react-dom";
 import { useState, useContext, createContext, useMemo } from "react";
 
+// Contexte pour gérer l'ouverture/fermeture de la boîte de dialogue
 const DialogContext = createContext(null);
 
+// Hook personnalisé pour accéder au contexte Dialog
 const useDialog = () => {
      const context = useContext(DialogContext);
      if (!context) {
           throw new Error("useDialog must be used within Dialog");
      }
-
      return context;
 };
 
+// Fournit le contexte Dialog à ses enfants
 const Dialog = ({ children }) => {
      const [open, setOpen] = useState(0);
 
@@ -33,6 +35,7 @@ const Dialog = ({ children }) => {
      );
 };
 
+// Bouton pour ouvrir la boîte de dialogue d'ajout d'aliment
 const DialogTrigger = () => {
      const { setOpen } = useDialog();
      return (
@@ -42,6 +45,7 @@ const DialogTrigger = () => {
      );
 };
 
+// Bouton pour fermer la boîte de dialogue
 const DialogClose = () => {
      const { setOpen } = useDialog();
      return (
@@ -54,6 +58,7 @@ const DialogClose = () => {
      );
 };
 
+// Contenu de la boîte de dialogue (formulaire d'ajout)
 const DialogContent = ({ children }) => {
      const context = useDialog();
 
@@ -69,6 +74,7 @@ const DialogContent = ({ children }) => {
      );
 };
 
+// Formulaire pour ajouter un aliment au frigo
 function FormAddFood({ setFoods, foods }) {
      const { setOpen } = useDialog();
 
@@ -137,12 +143,14 @@ function FormAddFood({ setFoods, foods }) {
      );
 }
 
+// Composant pour afficher un aliment individuel
 const Food = (props) => {
      return (
           <div className="card bg-base-100 shadow-xl">
                <div className="card-body">
                     <h2 className="card-title">{props.name}</h2>
                     <div className="card-actions justify-end items-center">
+                         {/* Bouton pour diminuer la quantité */}
                          <button
                               className="btn btn-square btn-sm"
                               onClick={() => props.decrement?.()}
@@ -152,12 +160,14 @@ const Food = (props) => {
                          <p>
                               Il vous reste {props.quantity} {props.type}
                          </p>
+                         {/* Bouton pour augmenter la quantité */}
                          <button
                               className="btn btn-square btn-sm"
                               onClick={() => props.increment?.()}
                          >
                               <Plus />
                          </button>
+                         {/* Bouton pour supprimer l'aliment */}
                          <button
                               className="btn btn-error btn-sm"
                               onClick={() => props.onDelete?.()}
@@ -170,14 +180,17 @@ const Food = (props) => {
      );
 };
 
+// Composant principal de la page Frigo
 function Frigo() {
      const { setPage } = usePage();
      const { foods, setFoods } = useFrigo();
 
+     // Supprime un aliment par son id
      const handleDelete = (id) => {
           setFoods(foods.filter((food) => food.id !== id));
      };
 
+     // Incrémente la quantité d'un aliment
      const handleIncrement = (id) => {
           setFoods((prevFoods) =>
                prevFoods.map((food) =>
@@ -188,6 +201,7 @@ function Frigo() {
           );
      };
 
+     // Décrémente la quantité d'un aliment (minimum 0)
      const handleDecrement = (id) => {
           setFoods((prevFoods) =>
                prevFoods.map((food) =>
@@ -210,6 +224,7 @@ function Frigo() {
                style={{ minHeight: "calc(100vh - 130px)", paddingTop: "130px" }}
           >
                <div className="container mx-auto px-4 py-8 max-w-7xl">
+                    {/* Titre et logo */}
                     <div className="flex justify-center items-center gap-4 mb-8">
                          <h1 className="text-4xl font-bold">Votre Frigo</h1>
                          <img
@@ -219,6 +234,7 @@ function Frigo() {
                          />
                     </div>
                     <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-1">
+                         {/* Liste des aliments */}
                          <div className="lg:col-span-3 md:col-span-1">
                               <div className="space-y-4">
                                    {foods.length > 0 ? (
@@ -246,6 +262,7 @@ function Frigo() {
                                              ))}
                                         </div>
                                    ) : (
+                                        // Message si le frigo est vide
                                         <div
                                              role="alert"
                                              className="alert alert-info max-w-2xl mx-auto"
@@ -268,9 +285,11 @@ function Frigo() {
                                    )}
                               </div>
                          </div>
+                         {/* Colonne pour ajouter un aliment et revenir à l'accueil */}
                          <div className="lg:col-span-1 md:col-span-1">
                               <div className="sticky top-40">
                                    <div className="flex flex-col gap-4">
+                                        {/* Boîte de dialogue d'ajout d'aliment */}
                                         <Dialog>
                                              <DialogTrigger />
                                              <DialogContent>
@@ -286,6 +305,7 @@ function Frigo() {
                                                   />
                                              </DialogContent>
                                         </Dialog>
+                                        {/* Bouton pour revenir à l'accueil */}
                                         <button
                                              className="btn btn-ghost"
                                              onClick={() => {
