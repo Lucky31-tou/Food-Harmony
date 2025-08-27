@@ -26,11 +26,6 @@ Food-Harmony est une application permettant de gérer facilement la nourriture d
 
 Pour l’instant, ce projet n’a qu’un seul contributeur.
 
-## Licence
-
-Une licence détermine ce que les autres peuvent faire avec ce projet (utilisation, modification, partage…).  
-_Si tu veux que le code soit utilisable par tous, tu peux ajouter la licence MIT ou une autre licence Open Source. Si tu veux que personne ne réutilise ton code, tu peux ne rien mettre ou préciser que le code est privé._
-
 ## Contact
 
 Pour toute question ou suggestion, n’hésitez pas à ouvrir une _issue_ ou à me contacter directement.
