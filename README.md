@@ -31,17 +31,25 @@ L'application a pour objectif d'aider les utilisateurs à organiser, suivre et o
 ## Installation
 
 1. Clonez le dépôt :
+
+- Otion 1 : Avec git
    ```bash
    git clone https://github.com/Lucky31-tou/Food-Harmony.git
    ```
 
-2. Installez les dépendances :
+- Option 2 : Sans git
+  1. Cliquer sur le bouton ***Code*** en haut à droite
+  2. Selectionner ***Download Zip***
+  3. Décompressez le dossier
+  
+
+3. Installez les dépendances :
    ```bash
    cd Food-Harmony
    npm install
    ```
 
-3. Installer flask et ses dépendances
+4. Installer flask et ses dépendances
    ```bash
    cd backend
    pip install flask
