@@ -53,14 +53,22 @@ L'application a pour objectif d'aider les utilisateurs à organiser, suivre et o
    ```bash
    cd backend
    pip install flask
+   cd ..
    ```
 
-3. Lancez l'application :
+5. Installer le plugin Vite
+   ```bash
+   cd frontend
+   npm install @vitejs/plugin-react --save-dev
+   cd ..
+   ```
+
+6. Lancez l'application :
    ```bash
    npm run dev
    ```
 
-4. Rendez-vous sur [http://localhost:3000](http://localhost:3000) pour utiliser l'application.
+7. Rendez-vous sur [http://localhost:5173](http://localhost:5173) pour utiliser l'application.
 
 ## Auteur
 
