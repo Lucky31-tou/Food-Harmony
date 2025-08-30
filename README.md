@@ -1,31 +1,66 @@
 # Food-Harmony
 
-Food-Harmony est une application permettant de gérer facilement la nourriture d’un foyer. Elle aide à organiser ses aliments, gérer les stocks, planifier les repas, et générer automatiquement une liste de courses hebdomadaire.
+**Food-Harmony** est une application web développée en React qui permet de gérer sa nourriture de manière simple et efficace.
 
-## Fonctionnalités
+## Aperçu
 
-- **Gestion des aliments** : Ajoutez tous les aliments présents chez vous.
-- **Gestion des quantités** : Mettez à jour les quantités d’aliments après avoir cuisiné ou fait des courses.
-- **Génération de liste de courses** : Obtenez une liste de courses optimisée chaque semaine selon vos stocks.
-- **Menus et suggestions** : Stockez vos menus préférés, l’application peut vous les reproposer automatiquement.
-
-## 📷 Aperçu
+Voici un aperçu de l’application :
 
 ![Aperçu](images/apercu.png)
 
+Exemple :
+
+![Aperçu de Food-Harmony](./screenshots/apercu-1.png)
+
+## Description
+
+L'application a pour objectif d'aider les utilisateurs à organiser, suivre et optimiser la gestion de leurs aliments. Grâce à une interface intuitive, vous pouvez facilement :
+
+- Ajouter et supprimer des aliments
+- Visualiser l'inventaire de votre nourriture
+- Éviter le gaspillage alimentaire en suivant les dates de péremption
+- Planifier vos repas à partir des aliments disponibles
+
+## Fonctionnalités principales
+
+- Interface utilisateur réactive grâce à React
+- Gestion de l'inventaire alimentaire
+- Suivi des dates de péremption
+- Organisation et planification des repas
+
 ## Technologies utilisées
 
-- **Frontend** : React
-- **Backend** : Flask
+- **React** (JavaScript)
+- Autres dépendances à préciser selon le projet
 
-## Installation & Utilisation
+## Installation
 
-⚠️ L’installation n’est pas encore automatisée. Le déploiement mobile est également prévu pour plus tard, afin que tous les membres d’un foyer puissent y accéder facilement.
+1. Clonez le dépôt :
+   ```bash
+   git clone https://github.com/Lucky31-tou/Food-Harmony.git
+   ```
+
+2. Installez les dépendances :
+   ```bash
+   cd Food-Harmony
+   npm install
+   ```
+
+3. Lancez l'application :
+   ```bash
+   npm start
+   ```
+
+4. Rendez-vous sur [http://localhost:3000](http://localhost:3000) pour utiliser l'application.
 
 ## Contribuer
 
-Pour l’instant, ce projet n’a qu’un seul contributeur.
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou à proposer une pull request.
 
-## Contact
+## Auteur
 
-Pour toute question ou suggestion, n’hésitez pas à ouvrir une _issue_ ou à me contacter directement.
+- [Lucky31-tou](https://github.com/Lucky31-tou)
+
+---
+
+*Ce projet est open-source et en cours de développement.*
