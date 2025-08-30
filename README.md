@@ -8,10 +8,6 @@ Voici un aperçu de l’application :
 
 ![Aperçu](images/apercu.png)
 
-Exemple :
-
-![Aperçu de Food-Harmony](./screenshots/apercu-1.png)
-
 ## Description
 
 L'application a pour objectif d'aider les utilisateurs à organiser, suivre et optimiser la gestion de leurs aliments. Grâce à une interface intuitive, vous pouvez facilement :
