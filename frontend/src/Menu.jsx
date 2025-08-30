@@ -90,6 +90,14 @@ function FormAddMenu({ setMenus }) {
         setFood("");
     };
 
+    // Gestionnaire pour la touche Entrée
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault(); // Empêche la soumission du formulaire
+            handleClick();
+        }
+    };
+
     // Supprime un aliment de la liste du menu
     const handleDelete = (f) => {
         setListFood(listFood.filter((food) => food !== f));
@@ -148,6 +156,7 @@ function FormAddMenu({ setMenus }) {
                     onChange={(e) => {
                         setFood(e.target.value);
                     }}
+                    onKeyDown={handleKeyDown}
                 />
                 <button
                     type="button"
