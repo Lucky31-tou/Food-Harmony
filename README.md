@@ -41,6 +41,12 @@ L'application a pour objectif d'aider les utilisateurs à organiser, suivre et o
    npm install
    ```
 
+3. Installer flask et ses dépendances
+   ```bash
+   cd backend
+   pip install flask
+   ```
+
 3. Lancez l'application :
    ```bash
    npm run  dev
