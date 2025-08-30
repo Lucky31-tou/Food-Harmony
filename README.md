@@ -57,7 +57,7 @@ L'application a pour objectif d'aider les utilisateurs à organiser, suivre et o
 
 3. Lancez l'application :
    ```bash
-   npm run  dev
+   npm run dev
    ```
 
 4. Rendez-vous sur [http://localhost:3000](http://localhost:3000) pour utiliser l'application.
