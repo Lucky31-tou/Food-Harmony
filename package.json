@@ -1,0 +1,13 @@
+{
+    "name": "food-harmony-root",
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "dev-frontend": "npm run dev --prefix frontend",
+        "dev-backend": "cd backend && flask --app app run",
+        "dev": "concurrently --names \"FRONTEND,BACKEND\" -c \"bgBlue.bold,bgMagenta.bold\"  \"npm:dev-frontend\" \"npm:dev-backend\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
