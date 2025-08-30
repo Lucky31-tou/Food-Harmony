@@ -46,29 +46,39 @@ L'application a pour objectif d'aider les utilisateurs à organiser, suivre et o
 3. Installez les dépendances :
    ```bash
    cd Food-Harmony
+   ```
+   ```bash
    npm install
    ```
 
-4. Installer flask et ses dépendances
+5. Installer flask et ses dépendances
    ```bash
    cd backend
+   ```
+   ```bash
    pip install flask
+   ```
+   ```bash
    cd ..
    ```
 
-5. Installer le plugin Vite
+6. Installer le plugin Vite
    ```bash
    cd frontend
+   ```
+   ```bash
    npm install @vitejs/plugin-react --save-dev
+   ```
+   ```bash
    cd ..
    ```
 
-6. Lancez l'application :
+8. Lancez l'application :
    ```bash
    npm run dev
    ```
 
-7. Rendez-vous sur [http://localhost:5173](http://localhost:5173) pour utiliser l'application.
+9. Rendez-vous sur [http://localhost:5173](http://localhost:5173) pour utiliser l'application.
 
 ## Auteur
 
