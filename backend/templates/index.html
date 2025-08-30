@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Test Food-Harmony</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='style.css') }}"
+        />
+    </head>
+    <body>
+        <div class="container">
+            <div class="card">
+                <form action="{{ url_for('add_food')}}" method="POST">
+                    <label for="name"
+                        >Nom :
+                        <input type="text" name="name" id="name" />
+                    </label>
+                    <label for="quantity"
+                        >Quantité :
+                        <input type="number" name="quantity" id="quantity" />
+                    </label>
+                    <label for="type"
+                        >Type :
+                        <input type="text" name="type" id="type" />
+                    </label>
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
+            <div class="card">
+                <form action="{{ url_for('add_menu') }}" method="POST">
+                    {% for food in foods %}
+                    <label for="food_ids">
+                        <input
+                            type="checkbox"
+                            name="food_ids"
+                            id="food_ids"
+                            value="{{ food['id']}}"
+                        />
+                        : {{ food["foodname"] }}
+                    </label>
+                    <input
+                        type="text"
+                        name="badge"
+                        id="badge"
+                        placeholder="Ajouter un badge"
+                    />
+                    <button type="submit">Créer</button>
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            {% if foods %}
+            <ul class="card">
+                {% for food in foods %}
+                <li>
+                    {{ food['foodname'] }} - {{ food['quantity'] }} - {{
+                    food['foodtype'] }}
+                    <form
+                        action="{{ url_for('delete', id=food['id']) }}"
+                        method="POST"
+                    >
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% if menus %}
+            <div class="card">
+                {% for menu in menus %}
+                <ul>
+                    {% for food in menu.foods %}
+                    <li>{{ food.foodname }}</li>
+                    {% endfor %}
+                </ul>
+                <p>Badge : {{ menu['badge'] }}</p>
+                <form
+                    action="{{ url_for('delete_menu', id=menu['id']) }}"
+                    method="POST"
+                >
+                    <button type="submit">Supprimer</button>
+                </form>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </body>
+</html>

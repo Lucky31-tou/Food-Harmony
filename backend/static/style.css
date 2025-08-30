@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+}
+
+.card {
+    display: block;
+}
+
+label {
+    display: block;
+}
+
+input {
+    display: block;
+}

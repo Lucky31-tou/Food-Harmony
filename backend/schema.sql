@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS foods;
+DROP TABLE IF EXISTS menus;
+
+CREATE TABLE foods (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    foodname TEXT NOT NULL,
+    quantity INTEGER,
+    foodtype TEXT NOT NULL
+);
+
+CREATE TABLE menus (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    listfood TEXT NOT NULL,
+    badge TEXT NOT NULL
+);

@@ -77,7 +77,7 @@ const DialogContent = ({ children }) => {
 };
 
 // Formulaire pour ajouter un nouveau menu
-function FormAddMenu({ setMenus, menus }) {
+function FormAddMenu({ setMenus }) {
     const { setOpen } = useDialog();
     const [food, setFood] = useState("");
     const [valeur, setValeur] = useState("");
@@ -103,18 +103,36 @@ function FormAddMenu({ setMenus, menus }) {
     };
 
     // Soumet le formulaire et ajoute le menu à la liste
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newMenu = {
-            id: menus.length + 1,
             listFood: listFood,
             badge: badge,
         };
 
-        setMenus([...menus, newMenu]);
+        try {
+            const response = await fetch("/api/menus", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newMenu),
+            });
 
-        e.currentTarget.reset();
+            if (!response.ok) {
+                throw new Error("La requête a échoué");
+            }
+
+            const addedMenu = await response.json();
+            setMenus((currentMenus) => [...currentMenus, addedMenu]);
+            setOpen(false);
+        } catch (error) {
+            console.error("Erreur lors de l'ajout de l'aliment:", error);
+        }
+
+        setFood("");
+        setValeur("");
+        setBadge("");
+        setListFood([]);
         setOpen(false);
     };
 
@@ -191,7 +209,7 @@ function Menu(props) {
         <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
                 <ul className="list-disc pl-5">
-                    {props.listFood.map((f, index) => (
+                    {(props.listFood ?? []).map((f, index) => (
                         <li key={index}>{f}</li>
                     ))}
                 </ul>
@@ -215,8 +233,22 @@ function Menus() {
     const { menus, setMenus } = useMenu();
 
     // Supprime un menu par son id
-    const handleDelete = (id) => {
-        setMenus(menus.filter((menu) => menu.id !== id));
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`/api/menus/${id}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                setMenus((currentMenus) =>
+                    currentMenus.filter((menu) => menu.id !== id)
+                );
+            } else {
+                console.error("La suppression a échoué c^té serveur");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la suppression de l'aliment:", error);
+        }
     };
 
     return (

@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { PageContext, usePage, FrigoContext, MenuContext } from "./Context";
 
@@ -9,8 +9,8 @@ import Frigo from "./Frigo";
 import Menus from "./Menu";
 
 // Contexte pour gérer les menus
-const MenuC = ({ children }) => {
-    const [menus, setMenus] = useState([]); // Liste des menus
+const MenuC = ({ menus, setMenus, children }) => {
+    // Liste des menus
 
     return (
         <MenuContext.Provider value={{ menus, setMenus }}>
@@ -20,9 +20,7 @@ const MenuC = ({ children }) => {
 };
 
 // Contexte pour gérer les aliments du frigo
-const FrigoC = ({ children }) => {
-    const [foods, setFoods] = useState([]); // Liste des aliments
-
+const FrigoC = ({ foods, setFoods, children }) => {
     return (
         <FrigoContext.Provider value={{ foods, setFoods }}>
             {children}
@@ -62,12 +60,24 @@ function PageContent() {
 
 // Composant principal de l'application
 function App() {
+    const [menus, setMenus] = useState([]);
+    const [foods, setFoods] = useState([]);
+
+    useEffect(() => {
+        fetch("/api/foods-and-menus", { method: "GET" })
+            .then((response) => response.json())
+            .then((data) => {
+                setFoods(data.foods);
+                setMenus(data.menus);
+            });
+    }, []);
+
     return (
         <div style={{ minHeight: "100vh" }}>
             {/* Fournit les contextes à toute l'application */}
             <Page>
-                <FrigoC>
-                    <MenuC>
+                <FrigoC foods={foods} setFoods={setFoods}>
+                    <MenuC menus={menus} setMenus={setMenus}>
                         <Navbar />
                         <PageContent />
                     </MenuC>

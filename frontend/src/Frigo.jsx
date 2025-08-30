@@ -18,12 +18,17 @@ const useDialog = () => {
 
 // Fournit le contexte Dialog à ses enfants
 const Dialog = ({ children }) => {
-    const [open, setOpen] = useState(0);
+    const [open, setOpen] = useState(false);
+
+    console.log("Dialog state:", open); // ← Log pour debug
 
     const value = useMemo(
         () => ({
             open,
-            setOpen,
+            setOpen: (newValue) => {
+                console.log("Setting dialog open to:", newValue); // ← Log pour debug
+                setOpen(newValue);
+            },
         }),
         [open]
     );
@@ -62,6 +67,8 @@ const DialogClose = () => {
 const DialogContent = ({ children }) => {
     const context = useDialog();
 
+    console.log("DialogContent - context.open:", context.open); // ← Log pour debug
+
     if (!context.open) return;
 
     return createPortal(
@@ -75,25 +82,41 @@ const DialogContent = ({ children }) => {
 };
 
 // Formulaire pour ajouter un aliment au frigo
-function FormAddFood({ setFoods, foods }) {
+function FormAddFood({ setFoods }) {
     const { setOpen } = useDialog();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
 
         const newFood = {
-            id: foods.length + 1,
-            name: formData.get("name"),
+            foodname: formData.get("name"), // `foodname` doit correspondre à la colonne de la BDD
             quantity: formData.get("quantity"),
-            type: formData.get("type"),
+            foodtype: formData.get("type"), // `foodtype` doit correspondre à la colonne de la BDD
         };
 
-        setFoods([...foods, newFood]);
+        try {
+            const response = await fetch("/api/foods", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newFood),
+            });
 
-        e.currentTarget.reset();
-        setOpen(false);
+            if (!response.ok) {
+                throw new Error("La requête a échoué");
+            }
+
+            const addedFood = await response.json(); // 3. Récupérer l'aliment créé avec son ID
+
+            // 4. Mettre à jour l'état avec la donnée venant du serveur
+            setFoods((currentFoods) => [...currentFoods, addedFood]);
+
+            console.log("Closing dialog..."); // ← Log pour debug
+            setOpen(false);
+        } catch (error) {
+            console.error("Erreur lors de l'ajout de l'aliment:", error);
+        }
     };
 
     return (
@@ -148,7 +171,7 @@ const Food = (props) => {
     return (
         <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
-                <h2 className="card-title">{props.name}</h2>
+                <h2 className="card-title">{props.foodname}</h2>
                 <div className="card-actions justify-end items-center">
                     {/* Bouton pour diminuer la quantité */}
                     <button
@@ -158,7 +181,7 @@ const Food = (props) => {
                         <Minus />
                     </button>
                     <p>
-                        Il vous reste {props.quantity} {props.type}
+                        Il vous reste {props.quantity} {props.foodtype}
                     </p>
                     {/* Bouton pour augmenter la quantité */}
                     <button
@@ -186,33 +209,80 @@ function Frigo() {
     const { foods, setFoods } = useFrigo();
 
     // Supprime un aliment par son id
-    const handleDelete = (id) => {
-        setFoods(foods.filter((food) => food.id !== id));
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`/api/foods/${id}`, {
+                method: "DELETE",
+            });
+            if (response.ok) {
+                setFoods((currentFoods) =>
+                    currentFoods.filter((food) => food.id !== id)
+                );
+            } else {
+                console.error("La suppression a échoué côté serveur.");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la suppression de l'aliment:", error);
+        }
     };
 
     // Incrémente la quantité d'un aliment
-    const handleIncrement = (id) => {
-        setFoods((prevFoods) =>
-            prevFoods.map((food) =>
-                food.id === id
-                    ? { ...food, quantity: Number(food.quantity) + 1 }
-                    : food
-            )
-        );
+    const handleIncrement = async (id) => {
+        const foodToUpdate = foods.find((food) => food.id === id);
+        const updatedFood = {
+            ...foodToUpdate,
+            quantity: Number(foodToUpdate.quantity) + 1,
+        };
+
+        try {
+            const response = await fetch(`/api/foods/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedFood),
+            });
+            if (response.ok) {
+                const result = await response.json();
+                setFoods((prevFoods) =>
+                    prevFoods.map((food) => (food.id === id ? result : food))
+                );
+            }
+        } catch (error) {
+            console.error(
+                "Erreur lors de la mise à jour de la quantité:",
+                error
+            );
+        }
     };
 
     // Décrémente la quantité d'un aliment (minimum 0)
-    const handleDecrement = (id) => {
-        setFoods((prevFoods) =>
-            prevFoods.map((food) =>
-                food.id === id
-                    ? {
-                          ...food,
-                          quantity: Math.max(0, Number(food.quantity) - 1),
-                      }
-                    : food
-            )
-        );
+    const handleDecrement = async (id) => {
+        const foodToUpdate = foods.find((food) => food.id === id);
+        if (foodToUpdate.quantity <= 0) return; // Ne rien faire si la quantité est déjà à 0
+
+        const updatedFood = {
+            ...foodToUpdate,
+            quantity: Number(foodToUpdate.quantity) - 1,
+        };
+
+        try {
+            const response = await fetch(`/api/foods/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedFood),
+            });
+            if (response.ok) {
+                const result = await response.json();
+                setFoods((prevFoods) =>
+                    prevFoods.map((food) => (food.id === id ? result : food))
+                );
+            }
+        } catch (error) {
+            console.error(
+                "Erreur lors de la mise à jour de la quantité:",
+                error
+            );
+        }
     };
 
     return (
