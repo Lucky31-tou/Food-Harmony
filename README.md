@@ -21,13 +21,12 @@ L'application a pour objectif d'aider les utilisateurs à organiser, suivre et o
 
 - Interface utilisateur réactive grâce à React
 - Gestion de l'inventaire alimentaire
-- Suivi des dates de péremption
-- Organisation et planification des repas
+- Création de vos propres menus
 
 ## Technologies utilisées
 
 - **React** (JavaScript)
-- Autres dépendances à préciser selon le projet
+- **Flask** (Python)
 
 ## Installation
 
