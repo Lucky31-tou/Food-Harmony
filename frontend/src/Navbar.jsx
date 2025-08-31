@@ -17,6 +17,13 @@ function Navbar({ onSearch }) {
         setValue("");
     };
 
+    // Gestionnaire pour la touche Entrée
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleClick();
+        }
+    };
+
     return (
         <div className="navbar bg-base-100 py-4">
             {/* Logo et titre de l'application */}
@@ -75,6 +82,7 @@ function Navbar({ onSearch }) {
                             onChange={(e) => {
                                 setValue(e.target.value);
                             }}
+                            onKeyDown={handleKeyDown}
                         />
                         <button
                             className="btn btn-lg btn-ghost btn-square p-2 absolute right-0 top-0 bottom-0"
