@@ -40,7 +40,7 @@ const Page = ({ children }) => {
 };
 
 // Affiche le contenu de la page selon la valeur de 'page'
-function PageContent() {
+function PageContent({ searchWord }) {
     const { page } = usePage();
 
     let content;
@@ -49,10 +49,11 @@ function PageContent() {
             content = <Accueil />; // Page d'accueil
             break;
         case 1:
-            content = <Frigo />; // Page frigo
+            content = <Frigo word={searchWord} />; // Page frigo
             break;
         case 2:
-            content = <Menus />; // Page menus
+            content = <Menus word={searchWord} />; // Page menus
+            break;
     }
 
     return <div>{content}</div>;
@@ -62,6 +63,7 @@ function PageContent() {
 function App() {
     const [menus, setMenus] = useState([]);
     const [foods, setFoods] = useState([]);
+    const [searchWord, setSearchWord] = useState("");
 
     useEffect(() => {
         fetch("/api/foods-and-menus", { method: "GET" })
@@ -78,8 +80,8 @@ function App() {
             <Page>
                 <FrigoC foods={foods} setFoods={setFoods}>
                     <MenuC menus={menus} setMenus={setMenus}>
-                        <Navbar />
-                        <PageContent />
+                        <Navbar onSearch={setSearchWord} />
+                        <PageContent searchWord={searchWord} />
                     </MenuC>
                 </FrigoC>
             </Page>

@@ -204,12 +204,18 @@ const Food = (props) => {
 };
 
 // Composant principal de la page Frigo
-function Frigo() {
+function Frigo({ word }) {
     const { setPage } = usePage();
     const { foods, setFoods } = useFrigo();
+    foods.sort((a, b) => a.foodname.localeCompare(b.foodname));
+
+    const foodsFilter = word
+        ? foods.filter((food) =>
+              food.foodname.toUpperCase().includes(word.toUpperCase())
+          )
+        : foods;
 
     // Supprime un aliment par son id
-
     const handleDelete = async (id) => {
         try {
             const response = await fetch(`/api/foods/${id}`, {
@@ -306,7 +312,7 @@ function Frigo() {
                         <div className="space-y-4">
                             {foods.length > 0 ? (
                                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-                                    {foods.map((food) => (
+                                    {foodsFilter.map((food) => (
                                         <Food
                                             key={food.id}
                                             {...food}

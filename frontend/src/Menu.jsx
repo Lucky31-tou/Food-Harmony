@@ -237,9 +237,19 @@ function Menu(props) {
 }
 
 // Composant principal de la page Menus
-function Menus() {
+function Menus({ word }) {
     const { setPage } = usePage();
     const { menus, setMenus } = useMenu();
+
+    const menusFilter = word
+        ? menus.filter(
+              (menu) =>
+                  menu.badge.toUpperCase().includes(word.toUpperCase()) ||
+                  menu.listFood.some((food) =>
+                      food.toUpperCase().includes(word.toUpperCase())
+                  )
+          )
+        : menus;
 
     // Supprime un menu par son id
     const handleDelete = async (id) => {
@@ -281,7 +291,7 @@ function Menus() {
                         <div className="space-y-4">
                             {menus.length > 0 ? (
                                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-                                    {menus.map((menu) => (
+                                    {menusFilter.map((menu) => (
                                         <Menu
                                             key={menu.id}
                                             {...menu}

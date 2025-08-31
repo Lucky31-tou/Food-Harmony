@@ -1,10 +1,21 @@
 import { Search } from "lucide-react";
 import logo from "./images/logo.jpg";
 import { PageContext, usePage } from "./Context";
+import { useState } from "react";
 
 // Composant de la barre de navigation principale
-function Navbar() {
-    const { setPage } = usePage(); // Permet de changer la page affichée
+function Navbar({ onSearch }) {
+    const { page, setPage } = usePage(); // Permet de changer la page affichée
+    const [value, setValue] = useState("");
+
+    const handleClick = () => {
+        if (page !== 1 && page !== 2) {
+            alert("Vous ne pouvez pas faire de recherche ici");
+            setValue("");
+        }
+        onSearch(value);
+        setValue("");
+    };
 
     return (
         <div className="navbar bg-base-100 py-4">
@@ -60,8 +71,15 @@ function Navbar() {
                             type="text"
                             placeholder="Rechercher"
                             className="grow"
+                            value={value}
+                            onChange={(e) => {
+                                setValue(e.target.value);
+                            }}
                         />
-                        <button className="btn btn-lg btn-ghost btn-square p-2 absolute right-0 top-0 bottom-0">
+                        <button
+                            className="btn btn-lg btn-ghost btn-square p-2 absolute right-0 top-0 bottom-0"
+                            onClick={handleClick}
+                        >
                             <Search size={40} />
                         </button>
                     </label>
