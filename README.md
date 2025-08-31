@@ -16,12 +16,14 @@ L'application a pour objectif d'aider les utilisateurs à organiser, suivre et o
 - Visualiser l'inventaire de votre nourriture
 - Ajouter et supprimer vos menus
 - Visualiser l'inventaire de vos menus
+- Faire vos courses
 
 ## Fonctionnalités principales
 
 - Interface utilisateur réactive grâce à React
 - Gestion de l'inventaire alimentaire
 - Création de vos propres menus
+- Créer votre liste de courses
 
 ## Technologies utilisées
 
