@@ -119,6 +119,8 @@ function FormLlisteCourse({ foods, setFoods }) {
             }
             setFood("");
             if (!sub) setSub(true);
+        } else {
+            alert("Vous devez d'abord ajouter cette aliment dans votre frigo");
         }
     };
 
