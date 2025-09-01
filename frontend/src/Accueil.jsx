@@ -45,11 +45,38 @@ const Dialog = ({ children }) => {
 };
 
 // Bouton pour ouvrir la boîte de dialogue de création de menu
-const DialogTrigger = () => {
+const DialogTrigger = ({ setListes }) => {
     const { setOpen } = useDialog();
     return (
-        <button className="btn btn-primary" onClick={() => setOpen(true)}>
-            Faire une liste de course
+        <button
+            className="btn btn-primary"
+            onClick={() => {
+                setOpen(true);
+                setListes([]);
+            }}
+        >
+            Faire une liste de courses
+        </button>
+    );
+};
+
+const DialogIa = ({ setListes, foods }) => {
+    const { setOpen } = useDialog();
+
+    const handleGenerate = () => {
+        const newList = foods
+            .filter((food) => food.quantity === 0 && food.quantity_max !== 0)
+            .map((food) => ({
+                foodname: food.foodname,
+                quantity: food.quantity_max,
+            }));
+        setListes(newList);
+        setOpen(true);
+    };
+
+    return (
+        <button className="btn btn-primary" onClick={handleGenerate}>
+            Générer une liste de courses
         </button>
     );
 };
@@ -84,11 +111,10 @@ const DialogContent = ({ children }) => {
 };
 
 // Formulaire pour ajouter un nouveau menu
-function FormLlisteCourse({ foods, setFoods }) {
+function FormLlisteCourse({ listes, foods, setFoods }) {
     const { setOpen } = useDialog();
     const [food, setFood] = useState("");
-    const [sub, setSub] = useState(false);
-    const [listFood, setListFood] = useState([]);
+    const [listFood, setListFood] = useState(listes || []);
     const [sugg, setSugg] = useState([]);
     const [showSugg, setShowSugg] = useState(false);
     const menuRef = useRef(null);
@@ -118,7 +144,6 @@ function FormLlisteCourse({ foods, setFoods }) {
                 setListFood([...listFood, newFood]);
             }
             setFood("");
-            if (!sub) setSub(true);
         } else {
             alert("Vous devez d'abord ajouter cette aliment dans votre frigo");
         }
@@ -136,9 +161,6 @@ function FormLlisteCourse({ foods, setFoods }) {
     const handleDelete = (f) => {
         const newListFood = listFood.filter((food) => food.foodname !== f);
         setListFood(newListFood);
-        if (newListFood.length === 0) {
-            setSub(false);
-        }
     };
 
     // Soumet le formulaire et ajoute le menu à la liste
@@ -183,7 +205,6 @@ function FormLlisteCourse({ foods, setFoods }) {
 
         setFood("");
         setListFood([]);
-        setSub(false);
         setSugg([]);
         setShowSugg(false);
         setOpen(false);
@@ -293,7 +314,7 @@ function FormLlisteCourse({ foods, setFoods }) {
                 ))}
             </ul>
             {/* Bouton pour soumettre le formulaire */}
-            {sub ? (
+            {listFood.length > 0 ? (
                 <button type="submit" className="btn btn-primary w-full mt-6">
                     Confirmer mes achats
                 </button>
@@ -305,6 +326,7 @@ function FormLlisteCourse({ foods, setFoods }) {
 // Composant de la page d'accueil
 function Accueil() {
     const { foods, setFoods } = useFrigo();
+    const [listes, setListes] = useState([]);
 
     return (
         // Section principale avec un fond et une hauteur adaptée
@@ -332,7 +354,10 @@ function Accueil() {
                 {/* Boutons d'action principaux */}
                 <div>
                     <Dialog>
-                        <DialogTrigger />
+                        <div className="flex flex-col gap-4">
+                            <DialogTrigger setListes={setListes} />
+                            <DialogIa setListes={setListes} foods={foods} />
+                        </div>
                         <DialogContent>
                             <div className="flex justify-between items-center">
                                 <h3 className="text-lg font-bold mb-4">
@@ -342,6 +367,7 @@ function Accueil() {
                             </div>
                             <hr />
                             <FormLlisteCourse
+                                listes={listes}
                                 foods={foods}
                                 setFoods={setFoods}
                             />

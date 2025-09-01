@@ -5,6 +5,7 @@ CREATE TABLE foods (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     foodname TEXT NOT NULL,
     quantity INTEGER,
+    quantity_max INTEGER,
     foodtype TEXT NOT NULL
 );
 
